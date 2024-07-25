@@ -1,18 +1,12 @@
 # Introduction
 
-This is the solution to the Backend Developer assignment for Natlex Group Oy, implemented by Mohammad Pandi.
+This is a web solution to manage Sections and GeologicalClasses.
 
 ## How to Build, Test, and Run
 
 ```sh
-# To build the project (including running tests)
-./gradlew build
-
 # To test the project
 ./gradlew test
-
-# To format the files
-./gradlew spotlessApply
 
 # To run the application with the development profile
 ./gradlew bootRun --args='--spring.profiles.active=dev'
