@@ -1,6 +1,6 @@
 # Introduction
 
-This is a web solution to manage Sections and GeologicalClasses.
+This is a web solution to manage Sections and Geological Classes.
 
 ## How to Build, Test, and Run
 
