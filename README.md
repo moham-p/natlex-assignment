@@ -10,6 +10,10 @@ This is a web solution to manage Sections and Geological Classes.
 
 # To run the application with the development profile
 ./gradlew bootRun --args='--spring.profiles.active=dev'
+
+# Alternatively, you can run the application as a container
+docker build -t natlex-assignment .
+docker run -p 8080:8080 natlex-assignment
 ```
 
 ## API Documentation
