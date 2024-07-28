@@ -47,7 +47,7 @@ public class ExportService {
     return CompletableFuture.completedFuture(jobId);
   }
 
-  public File getExportFile(String jobId) {
+  public File getExportedFile(String jobId) {
     Job exportJob =
         jobRepository
             .findById(jobId)

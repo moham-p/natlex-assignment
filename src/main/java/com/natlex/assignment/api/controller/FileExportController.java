@@ -54,7 +54,7 @@ public class FileExportController {
   public ResponseEntity<InputStreamResource> getExportedFile(@PathVariable String id)
       throws IOException {
 
-    File exportedFile = exportService.getExportFile(id);
+    File exportedFile = exportService.getExportedFile(id);
 
     HttpHeaders headers = new HttpHeaders();
     headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + id + ".xls");

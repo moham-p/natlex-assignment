@@ -110,7 +110,7 @@ public class FileExportControllerTest {
     var exportedFile = File.createTempFile("sections", ".xls");
     Files.write(exportedFile.toPath(), fileContentBytes);
 
-    given(exportService.getExportFile(anyString())).willReturn(exportedFile);
+    given(exportService.getExportedFile(anyString())).willReturn(exportedFile);
 
     mockMvc
         .perform(get(url + "/123/file").with(httpBasic("admin", "adminpassword")))
@@ -124,7 +124,7 @@ public class FileExportControllerTest {
   @Test
   void getExportedFileWithNonExistingJobId_shouldReturn404() throws Exception {
     var errorMessage = "Job not found";
-    given(exportService.getExportFile(anyString()))
+    given(exportService.getExportedFile(anyString()))
         .willThrow(new EntityNotFoundException(errorMessage));
 
     mockMvc
@@ -136,7 +136,7 @@ public class FileExportControllerTest {
   @Test
   void getExportedFileWhileInProgress_shouldReturn503() throws Exception {
     var errorMessage = "Export is still in progress";
-    given(exportService.getExportFile(anyString()))
+    given(exportService.getExportedFile(anyString()))
         .willThrow(new ExportInProgressException(errorMessage));
 
     mockMvc

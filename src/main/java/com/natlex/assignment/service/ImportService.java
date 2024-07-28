@@ -34,7 +34,6 @@ public class ImportService {
 
   @Async
   public CompletableFuture<String> importFile(String jobId, String filePath) throws IOException {
-
     File file = new File(filePath);
 
     try (InputStream inputStream = new FileInputStream(file);
@@ -46,26 +45,28 @@ public class ImportService {
         return CompletableFuture.completedFuture(jobId);
       }
 
-      Stream<Row> rowStream = StreamSupport.stream(sheet.spliterator(), false);
-      int headerColumnsCount = sheet.getRow(0).getPhysicalNumberOfCells();
-
-      rowStream
-          .skip(1)
-          .forEach(
-              row -> {
-                SectionRequest section = parseRowToSectionRequest(row, headerColumnsCount);
-                sectionService.saveImportedSection(section, jobId);
-              });
+      processSheetRows(sheet, jobId);
 
       return CompletableFuture.completedFuture(jobId);
 
     } catch (IOException e) {
       throw new JobException(jobId, e.getMessage());
     } finally {
-      if (!file.delete()) {
-        log.warn("Failed to delete temporary file: {}", file.getAbsolutePath());
-      }
+      deleteFile(file);
     }
+  }
+
+  private void processSheetRows(HSSFSheet sheet, String jobId) {
+    int headerColumnsCount = sheet.getRow(0).getPhysicalNumberOfCells();
+    Stream<Row> rowStream = StreamSupport.stream(sheet.spliterator(), false);
+
+    rowStream
+        .skip(1)
+        .forEach(
+            row -> {
+              SectionRequest section = parseRowToSectionRequest(row, headerColumnsCount);
+              sectionService.saveImportedSection(section, jobId);
+            });
   }
 
   private SectionRequest parseRowToSectionRequest(Row row, int columnsCount) {
@@ -88,5 +89,11 @@ public class ImportService {
     }
     sectionBuilder.geologicalClasses(geologicalClasses);
     return sectionBuilder.build();
+  }
+
+  private void deleteFile(File file) {
+    if (!file.delete()) {
+      log.warn("Failed to delete temporary file: {}", file.getAbsolutePath());
+    }
   }
 }
